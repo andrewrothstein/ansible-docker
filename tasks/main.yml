@@ -1,0 +1,46 @@
+---
+- stat: path='/usr/bin/docker'
+  register: dockerBinary
+
+- name : download docker install script
+  when: dockerBinary.stat.exists == false
+  shell: wget -O /tmp/install.docker.sh https://get.docker.com/
+
+- name: make install script executable
+  when: dockerBinary.stat.exists == false
+  file: path='/tmp/install.docker.sh' owner=root group=root mode=0755
+
+- name: install docker
+  when: dockerBinary.stat.exists == false
+  shell: /tmp/install.docker.sh
+
+- name : (Debian) proxify
+  when: ansible_os_family == "Debian" and proxy_env.http_proxy is defined
+  template: dest=/etc/default/docker src=etc/default/docker.j2
+
+- name : (RedHat) proxify - create /etc/systemd/system/docker.service.d
+  when: ansible_os_family == "RedHat" and proxy_env.http_proxy is defined
+  file: >
+    owner=root
+    group=docker
+    mode=755
+    path=/etc/systemd/system/docker.service.d
+    state=directory
+
+- name : (RedHat) proxify - install systemd drop-in
+  when: ansible_os_family == "RedHat" and proxy_env.http_proxy is defined
+  template: >
+    dest=/etc/systemd/system/docker.service.d/http-proxy.conf
+    src=etc/systemd/system/docker.service.d/http-proxy.conf.j2
+
+- name : (RedHat) proxify - systemctl daemon-reload
+  when: ansible_os_family == "RedHat" and proxy_env.http_proxy is defined
+  shell: systemctl daemon-reload
+  
+- name: (Fedora) update SELinux policy for docker
+  when: ansible_os_family == "RedHat"
+  yum: name=selinux-policy state=latest
+
+- name : launch docker...
+  service: name=docker state=restarted enabled=yes
+
