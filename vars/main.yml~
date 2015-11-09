@@ -1,3 +1,0 @@
----
-docker_machine_ver : 'v0.4.1'
-docker_machine_url : 'https://github.com/docker/machine/releases/download/{{docker_machine_ver}}/docker-machine_linux-amd64'
