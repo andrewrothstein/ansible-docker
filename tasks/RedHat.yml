@@ -1,0 +1,28 @@
+---
+- name: (RedHat) install utils for fiddling with ethernet bridges
+  yum: name={{item}} state=latest
+  with_items:
+    - bridge-utils
+
+- name : (RedHat) proxify - create /etc/systemd/system/docker.service.d
+  when: proxy_env.http_proxy is defined
+  file: >
+    owner=root
+    group=docker
+    mode=755
+    path=/etc/systemd/system/docker.service.d
+    state=directory
+
+- name : (RedHat) proxify - install systemd drop-in
+  when: proxy_env.http_proxy is defined
+  template: >
+    src=etc/systemd/system/docker.service.d/http-proxy.conf.j2
+    dest=/etc/systemd/system/docker.service.d/http-proxy.conf
+
+- name : (RedHat) proxify - systemctl daemon-reload
+  when: proxy_env.http_proxy is defined
+  command: systemctl daemon-reload
+  
+- name: (RedHat) update SELinux policy for docker
+  yum: name=selinux-policy state=latest
+

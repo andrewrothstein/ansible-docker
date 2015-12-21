@@ -1,0 +1,15 @@
+---
+- name: (Debian) install utils for fiddling with ethernet bridges
+  apt: name={{item}} state=latest
+  with_items:
+    - bridge-utils
+    
+- name : (Debian) proxify
+  when: proxy_env.http_proxy is defined
+  template: >
+    src=etc/default/docker.j2
+    dest=/etc/default/docker
+    owner=root
+    group=docker
+    mode=644
+

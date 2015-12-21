@@ -1,0 +1,3 @@
+---
+# to change the default docker0 bridge subnet
+# docker_bip : '10.1.2.3/8'
