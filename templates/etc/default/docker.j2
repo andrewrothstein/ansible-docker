@@ -5,6 +5,9 @@
 
 # Use DOCKER_OPTS to modify the daemon startup options.
 #DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4"
+{% if docker_bip is defined %}
+DOCKER_OPTS='--bip="{{ docker_bip }}"'
+{% endif %}
 
 # If you need Docker to use an HTTP proxy, it can also be specified here.
 {% if proxy_env.http_proxy is defined %}
