@@ -1,8 +1,12 @@
 ---
 - name : download docker install script
-  get_url: >
-    url=https://get.docker.com/
-    dest=/tmp/install.docker.sh
+  command: wget -O /tmp/install.docker.sh https://get.docker.com
+  args:
+    creates: /tmp/install.docker.sh
+
+- name: chmod /tmp/install.docker.sh...
+  file : >-
+    path=/tmp/install.docker.sh
     owner=root
     group=root
     mode=0755
