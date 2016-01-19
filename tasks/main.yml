@@ -3,7 +3,7 @@
   register: dockerBinary
 
 - name: install....
-  when: dockerBinary.stat.exists == false
+  when: dockerBinary.stat.exists == False
   include: RunInstaller.yml
 
 - name: (Debian) configuring...
