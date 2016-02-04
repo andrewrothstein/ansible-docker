@@ -1,3 +1,5 @@
 ---
 # to change the default docker0 bridge subnet
 docker_bip : '10.123.0.1/16'
+
+docker_insecure_registries : []
