@@ -6,6 +6,9 @@
   when: dockerBinary.stat.exists == False
   include: RunInstaller.yml
 
+- name: install utils for fiddling with ethernet bridges
+  package: name=bridge-utils state=latest
+    
 - name: (Debian) configuring...
   when: ansible_os_family == 'Debian'
   include: Debian.yml

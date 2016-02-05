@@ -1,9 +1,4 @@
 ---
-- name: (Debian) install utils for fiddling with ethernet bridges
-  apt: name={{item}} state=latest
-  with_items:
-    - bridge-utils
-    
 - name : (Debian) proxify
   when: proxy_env.http_proxy is defined
   template: >
