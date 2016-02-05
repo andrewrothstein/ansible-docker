@@ -15,5 +15,5 @@
   include: RedHat.yml
   
 - name : launch docker...
-  service: name=docker state=restarted enabled=yes
+  service: name=docker state=started enabled=yes
 
