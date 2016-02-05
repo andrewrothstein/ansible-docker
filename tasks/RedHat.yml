@@ -20,5 +20,5 @@
   command: systemctl daemon-reload
   
 - name: (RedHat) update SELinux policy for docker
-  package: name=selinux-policy state=latest
+  package: name=selinux-policy state=present
 
