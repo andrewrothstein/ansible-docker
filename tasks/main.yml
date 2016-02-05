@@ -7,7 +7,7 @@
   include: RunInstaller.yml
 
 - name: install utils for fiddling with ethernet bridges
-  package: name=bridge-utils state=latest
+  package: name=bridge-utils state=present
     
 - name: (Debian) configuring...
   when: ansible_os_family == 'Debian'
