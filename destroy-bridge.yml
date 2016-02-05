@@ -7,13 +7,8 @@
     - name: down docker0 bridge
       command: ip link set docker0 down
 
-    - name: (RedHat) install bridge-utils
-      when: ansible_os_family == "RedHat"
-      yum: state=latest name=bridge-utils
-      
-    - name: (Debian) install bridge-utils
-      when: ansible_os_family == "Debian"
-      apt: state=latest name=bridge-utils
+    - name: install bridge-utils
+      package: state=latest name=bridge-utils
       
     - name: delete docker0
       command: brctl delbr docker0
