@@ -1,6 +1,6 @@
 ---
 - name : download docker install script
-  command: wget -O /tmp/install.docker.sh https://get.docker.com
+  command: curl -s -L https://get.docker.com -o /tmp/install.docker.sh 
   args:
     creates: /tmp/install.docker.sh
 
