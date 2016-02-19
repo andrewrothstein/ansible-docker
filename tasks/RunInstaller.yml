@@ -1,6 +1,6 @@
 ---
 - name : download docker install script
-  command: curl -s -L https://get.docker.com -o /tmp/install.docker.sh 
+  command: curl -s -L {{docker_mirror}} -o /tmp/install.docker.sh 
   args:
     creates: /tmp/install.docker.sh
 

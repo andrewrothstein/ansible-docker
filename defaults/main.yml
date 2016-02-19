@@ -3,3 +3,8 @@
 docker_bip : '10.123.0.1/16'
 
 docker_insecure_registries : []
+#docker_insecure_registries:
+#  - 'localhost:5000'
+#  - 'https://trusted-remote-registry.mydomain'
+
+docker_mirror: 'https://get.docker.com'

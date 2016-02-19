@@ -1,22 +1,23 @@
-Role Name
-=========
+docker
+======
 
-A brief description of the role goes here.
+A role that installs Docker via https://get.docker.io
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
-
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+A list of insecure registries to authorize within the walled garden
+```
+docker_insecure_registries:
+  - registry.mydomain
 
 Dependencies
 ------------
+andrewrothstein.curl - we use curl rather than the ansible get_url module due to issues with ubuntu_trusty's version version of python (v2.7.6) [SNI](https://en.wikipedia.org/wiki/Server_Name_Indication) in TLS/SSL correctly with get.docker.io
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
@@ -25,7 +26,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: andrewrothstein.docker, insecure_registries : ["localhost:5000"], docker_mirror : "https://myinstaller.endpoint.io" }
 
 License
 -------
@@ -35,4 +36,4 @@ MIT
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Andrew Rothstein andrew.rothstein@gmail.com
