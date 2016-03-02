@@ -1,12 +1,11 @@
 ---
 # to change the default docker0 bridge subnet
-docker_bip : '10.123.0.1/16'
+#docker_bip : '10.123.0.1/16'
 
-docker_dns_resolvers : 
-  - '8.8.8.8'
-  - '8.8.4.4'
+#docker_dns_resolvers : 
+#  - '8.8.8.8'
+#  - '8.8.4.4'
 
-docker_insecure_registries : []
 #docker_insecure_registries:
 #  - 'localhost:5000'
 #  - 'https://trusted-remote-registry.mydomain'
