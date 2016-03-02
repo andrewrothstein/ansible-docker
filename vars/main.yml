@@ -1,2 +1,5 @@
 ---
 docker_insecure_registries_daemon_args : '{% for ir in docker_insecure_registries %} --insecure-registry {{ir}}{% endfor %}'
+docker_dns_daemon_args : '{% for dns in docker_dns_resolvers %} --dns {{dns}}{% endfor %}'
+docker_bip_daemon_args : '--bip="{{ docker_bip }}"'
+docker_opts : "{{docker_insecure_registries_daemon_args}} {{docker_dns_daemon_args}} {{docker_bip_daemon_args}}"
