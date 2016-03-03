@@ -1,6 +1,6 @@
 [Service]
-{% if proxy_env.http_proxy is defined %}
+{% if proxy_env is defined and proxy_env.http_proxy is defined %}
 Environment="http_proxy={{ proxy_env.http_proxy }}" "https_proxy={{ proxy_env.https_proxy }}" "no_proxy={{ proxy_env.no_proxy }}" "HTTP_PROXY={{ proxy_env.http_proxy }}" "HTTPS_PROXY={{ proxy_env.https_proxy }}" "NO_PROXY={{ proxy_env.no_proxy }}"
 {% endif %}
 ExecStart=
-ExecStart=/usr/bin/docker daemon -H unix:///var/run/docker.sock {% docker_opts %}
+ExecStart=/usr/bin/docker daemon -H fd:// {{ docker_opts }}

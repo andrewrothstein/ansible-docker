@@ -10,4 +10,6 @@
 #  - 'localhost:5000'
 #  - 'https://trusted-remote-registry.mydomain'
 
+#docker_daemon_args : '--host tcp://0.0.0.0:2375'
+
 docker_mirror: 'https://get.docker.com'

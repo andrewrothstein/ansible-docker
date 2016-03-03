@@ -1,6 +1,5 @@
 ---
 - name : (RedHat) proxify - create /etc/systemd/system/docker.service.d
-  when: proxy_env.http_proxy is defined
   file: >
     owner=root
     group=docker
@@ -9,11 +8,12 @@
     state=directory
 
 - name : (RedHat) proxify - install systemd drop-in
-  when: proxy_env.http_proxy is defined
   register: docker_service_updated
+  with_items:
+    - etc/systemd/system/docker.service.d/ansible-configured.conf
   template: >
-    src=etc/systemd/system/docker.service.d/http-proxy.conf.j2
-    dest=/etc/systemd/system/docker.service.d/http-proxy.conf
+    src={{item}}.j2
+    dest=/{{item}}
 
 - name : (RedHat) proxify - systemctl daemon-reload
   when: docker_service_updated.changed
