@@ -3,3 +3,10 @@ docker_insecure_registries_daemon_args : '{% if docker_insecure_registries is de
 docker_dns_daemon_args : '{% if docker_dns_resolvers is defined %}{% for dns in docker_dns_resolvers %} --dns {{dns}}{% endfor %}{% endif %}'
 docker_bip_daemon_args : '{% if docker_bip is defined %}--bip="{{ docker_bip }}"{% endif %}'
 docker_opts : "{% if docker_daemon_args is defined %}{{docker_daemon_args}}{% endif %} {{docker_insecure_registries_daemon_args}} {{docker_dns_daemon_args}} {{docker_bip_daemon_args}}"
+docker_http_proxy: '{% if proxy_env is defined and proxy_env.http_proxy is defined %}export http_proxy="{{proxy_env.http_proxy}}" {% endif %}'
+docker_https_proxy: '{% if proxy_env is defined and proxy_env.https_proxy is defined %}export https_proxy="{{proxy_env.https_proxy}}" {% endif %}' 
+docker_no_proxy: '{% if proxy_env is defined and proxy_env.no_proxy is defined %}export no_proxy="{{proxy_env.no_proxy}}" {% endif %}'
+docker_proxy_args : |+
+                {{docker_http_proxy}}
+                {{docker_https_proxy}}
+                {{docker_no_proxy}}
