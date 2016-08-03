@@ -1,0 +1,21 @@
+---
+- name : (Ubuntu - Xenial onwards...) proxify - create /etc/systemd/system/docker.service.d
+  file: >
+    owner=root
+    group=docker
+    mode=755
+    path=/etc/systemd/system/docker.service.d
+    state=directory
+
+- name : (Ubuntu - Xenial onwards...) proxify - install systemd drop-in
+  register: docker_service_updated
+  with_items:
+    - etc/systemd/system/docker.service.d/ansible-configured.conf
+  template: >
+    src={{item}}.j2
+    dest=/{{item}}
+
+- name : (Ubuntu - Xenial onwards...) proxify - systemctl daemon-reload
+  when: docker_service_updated.changed
+  command: systemctl daemon-reload
+  

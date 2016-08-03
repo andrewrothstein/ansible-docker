@@ -1,10 +1,9 @@
 ---
-- name : (Debian) proxify
+- name : (Debian or Ubuntu before Xenial) proxify
   when: proxy_env.http_proxy is defined
   template: >
     src=etc/default/docker.j2
     dest=/etc/default/docker
     owner=root
     group=docker
-    mode=644
-
+    mode=0644
