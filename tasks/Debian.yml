@@ -6,5 +6,4 @@
     dest=/etc/default/docker
     owner=root
     group=docker
-    mode=644
-
+    mode=0644

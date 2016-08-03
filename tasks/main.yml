@@ -15,11 +15,10 @@
   become_user: root
   package: name=bridge-utils state=present
 
-- name: (Debian or Ubuntu before Xenial) configuring...
+- name: (Ubuntu - For versions without systemd) configuring...
   become: yes
   become_user: root
-  when: ansible_os_family == 'Debian' or
-        (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 16)
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 16
   include: Debian.yml
 
 - name: (Ubuntu - Xenial onwards...) configuring...
