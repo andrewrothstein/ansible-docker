@@ -1,11 +1,4 @@
 ---
-- name : (RedHat) proxify - create /etc/systemd/system/docker.service.d
-  file: >
-    owner=root
-    group=docker
-    mode=755
-    path=/etc/systemd/system/docker.service.d
-    state=directory
 
 - name : (RedHat) proxify - install systemd drop-in
   register: docker_service_updated

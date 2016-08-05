@@ -1,12 +1,79 @@
 ---
-docker_insecure_registries_daemon_args : '{% if docker_insecure_registries is defined %}{% for ir in docker_insecure_registries %} --insecure-registry {{ir}}{% endfor %}{% endif %}'
-docker_dns_daemon_args : '{% if docker_dns_resolvers is defined %}{% for dns in docker_dns_resolvers %} --dns {{dns}}{% endfor %}{% endif %}'
-docker_bip_daemon_args : '{% if docker_bip is defined %}--bip="{{ docker_bip }}"{% endif %}'
-docker_opts : "{% if docker_daemon_args is defined %}{{docker_daemon_args}}{% endif %} {{docker_insecure_registries_daemon_args}} {{docker_dns_daemon_args}} {{docker_bip_daemon_args}}"
-docker_http_proxy: '{% if proxy_env is defined and proxy_env.http_proxy is defined %}export http_proxy="{{proxy_env.http_proxy}}" {% endif %}'
-docker_https_proxy: '{% if proxy_env is defined and proxy_env.https_proxy is defined %}export https_proxy="{{proxy_env.https_proxy}}" {% endif %}' 
-docker_no_proxy: '{% if proxy_env is defined and proxy_env.no_proxy is defined %}export no_proxy="{{proxy_env.no_proxy}}" {% endif %}'
-docker_proxy_args : |+
-                {{docker_http_proxy}}
-                {{docker_https_proxy}}
-                {{docker_no_proxy}}
+pki_key_file : '{{inventory_hostname}}{{pki_key_suffix}}'
+pki_key_src: '{{pki_dir}}/{{pki_keys_subdir}}/{{pki_key_file}}'
+pki_key_dest : '{{ssl_key_pki_key_dir}}/{{pki_key_file}}'
+
+pki_cert_file : '{{inventory_hostname}}{{pki_cert_suffix}}'
+pki_cert_src: '{{pki_dir}}/{{pki_certs_subdir}}/{{pki_cert_file}}'
+pki_cert_dest : '{{ssl_key_pki_cert_dir}}/{{pki_cert_file}}'
+
+pki_ca_file : 'ca{{pki_cert_suffix}}'
+pki_ca_cert_src: '{{pki_dir}}/{{pki_ca_cert_subdir}}/{{pki_ca_file}}'
+pki_ca_cert_dest : '{{ssl_key_pki_cacert_dir}}/{{pki_ca_file}}'
+
+docker_insecure_registries_daemon_args : >-
+  {% if docker_insecure_registries is defined %}
+  {% for ir in docker_insecure_registries %} --insecure-registry {{ir}}
+  {% endfor %}
+  {% endif %}
+
+docker_eff_port: >-
+  {% if docker_tls %}{{docker_tls_port}}{% else %}{{docker_nontls_port}}{% endif %}
+  
+docker_tls_args: >-
+  {% if docker_tls %}
+  --tls=true
+  --tlscert={{pki_cert_dest}}
+  --tlskey={{pki_key_dest}}
+  --tlscacert={{pki_ca_cert_dest}}
+  {% endif %}
+  
+docker_dns_daemon_args : >-
+  {% if docker_dns_resolvers is defined %}
+  {% for dns in docker_dns_resolvers %} --dns {{dns}}
+  {% endfor %}
+  {% endif %}
+
+docker_bip_daemon_args : >-
+  {% if docker_bip is defined %}--bip="{{ docker_bip }}"{% endif %}
+
+docker_cluster_advertise_args: >-
+  {% if docker_cluster_advertise_interface is defined %}
+  --cluster-advertise {{docker_cluster_advertise_interface}}:{{docker_eff_port}}
+  {% endif %}
+
+docker_cluster_store_args: >-
+  {% if docker_cluster_store is defined %}
+  --cluster-store {{docker_cluster_store}}
+  {% endif %}
+  
+docker_opts : >-
+  -H tcp://0.0.0.0:{{docker_eff_port}}
+  {% if docker_daemon_args is defined %}{{docker_daemon_args}}{% endif %}
+  {{docker_insecure_registries_daemon_args}}
+  {{docker_dns_daemon_args}}
+  {{docker_bip_daemon_args}}
+  {{docker_tls_args}}
+  {{docker_cluster_advertise_args}}
+  {{docker_cluster_store_args}}
+
+docker_http_proxy: >-
+  {% if proxy_env is defined and proxy_env.http_proxy is defined %}
+  export http_proxy="{{proxy_env.http_proxy}}"
+  {% endif %}
+
+docker_https_proxy: >-
+  {% if proxy_env is defined and proxy_env.https_proxy is defined %}
+  export https_proxy="{{proxy_env.https_proxy}}"
+  {% endif %}' 
+
+docker_no_proxy: >-
+  {% if proxy_env is defined and proxy_env.no_proxy is defined %}
+  export no_proxy="{{proxy_env.no_proxy}}"
+  {% endif %}
+
+docker_proxy_args : |
+  {{docker_http_proxy}}
+  {{docker_https_proxy}}
+  {{docker_no_proxy}}
+  

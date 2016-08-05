@@ -1,0 +1,5 @@
+---
+docker_init: upstart
+docker_config_dir: etc/default
+docker_config_files:
+  - { f: docker, m: '0644' }

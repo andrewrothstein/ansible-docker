@@ -13,3 +13,16 @@
 #docker_daemon_args : '--host tcp://0.0.0.0:2375'
 
 docker_mirror: 'https://get.docker.com'
+docker_group: docker
+docker_tls: True
+
+docker_nontls_port: 2375
+docker_tls_port: 2376
+
+pki_key_suffix: '.key'
+pki_cert_suffix: '.crt'
+
+pki_keys_subdir : 'private'
+pki_certs_subdir : 'issued'
+pki_ca_cert_subdir : '.'
+

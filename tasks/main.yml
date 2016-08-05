@@ -1,5 +1,19 @@
 ---
-- stat: path='/usr/bin/docker'
+- name: resolve platform specific vars
+  include_vars: "{{item}}"
+  with_first_found:
+    - "{{ansible_distribution}}-{{ansible_distribution_release}}.yml"
+    - "{{ansible_distribution}}.yml"
+    - "{{ansible_os_family}}.yml"
+
+- name: install utils for fiddling with ethernet bridges...
+  become: yes
+  become_user: root
+  with_items:
+    - bridge-utils
+  package: name={{item}} state=present
+
+- stat: path=/usr/bin/docker
   become: yes
   become_user: root
   register: dockerBinary
@@ -10,29 +24,58 @@
   become_user: root
   include: RunInstaller.yml
 
-- name: install utils for fiddling with ethernet bridges
+- name: loading systemd variables...
   become: yes
   become_user: root
-  package: name=bridge-utils state=present
+  when: >-
+    ansible_distribution != "Ubuntu"
+    or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 16)
+  include_vars: systemd-vars.yml
 
-- name: (Ubuntu - For versions without systemd) configuring...
+- name: loading upstart variables...
   become: yes
   become_user: root
   when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 16
-  include: Debian.yml
-
-- name: (Ubuntu - Xenial onwards...) configuring...
+  include_vars: upstart-vars.yml
+    
+- name : creating init-system config directory...
   become: yes
   become_user: root
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 16
-  include: Ubuntu.yml
-
-- name: (RedHat) configuring...
+  with_items: '{{docker_config_dir}}'
+  file: >
+    group={{docker_group}}
+    path=/{{docker_config_dir}}
+    state=directory
+    mode=0755
+    
+- name: configuring init-system...
   become: yes
   become_user: root
-  when: ansible_os_family == 'RedHat'
-  include: RedHat.yml
-  
+  with_items: '{{docker_config_files}}'
+  register: docker_config_written
+  template: >-
+    src={{docker_config_dir}}/{{item.f}}.j2
+    dest=/{{docker_config_dir}}/{{item.f}}
+    mode={{item.m}}
+    
+- name: configuring docker access for the root user...
+  become: yes
+  become_user: root
+  with_items:
+    - {f: '{{pki_cert_src}}', t: cert.pem, m: '0400'}
+    - {f: '{{pki_ca_cert_src}}', t: ca.pem, m: '0400'}
+    - {f: '{{pki_key_src}}', t: key.pem, m: '0400'}
+  copy: >-
+    src={{item.f}}
+    dest=/root/.docker/{{item.t}}
+    mode={{item.m}}
+    
+- name: init-system reload 
+  when: docker_config_written|changed and docker_init == 'systemd'
+  become: yes
+  become_user: root
+  command: systemctl daemon-reload
+
 - name : launch docker...
   become: yes
   become_user: root
