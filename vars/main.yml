@@ -46,6 +46,11 @@ docker_cluster_store_args: >-
   {% if docker_cluster_store is defined %}
   --cluster-store {{docker_cluster_store}}
   {% endif %}
+
+docker_storage_driver_args: >-
+  {% if docker_storage_driver is defined %}
+  --storage-driver={{docker_storage_driver}}
+  {% endif %}
   
 docker_opts : >-
   -H fd:// -H tcp://0.0.0.0:{{docker_eff_port}}
@@ -56,6 +61,7 @@ docker_opts : >-
   {{docker_tls_args}}
   {{docker_cluster_advertise_args}}
   {{docker_cluster_store_args}}
+  {{docker_storage_driver}}
 
 docker_http_proxy: >-
   {% if proxy_env is defined and proxy_env.http_proxy is defined %}
