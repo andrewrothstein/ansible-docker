@@ -1,15 +1,15 @@
 ---
-pki_key_file : '{{inventory_hostname}}{{pki_key_suffix}}'
-pki_key_src: '{{pki_dir}}/{{pki_keys_subdir}}/{{pki_key_file}}'
-pki_key_dest : '{{ssl_key_pki_key_dir}}/{{pki_key_file}}'
+docker_pki_key_file : '{{inventory_hostname}}{{docker_pki_key_suffix}}'
+docker_pki_key_src: '{{docker_pki_dir}}/{{docker_pki_key_file}}'
+docker_pki_key_dest : '{{docker_ssl_key_pki_key_dir}}/{{docker_pki_key_file}}'
 
-pki_cert_file : '{{inventory_hostname}}{{pki_cert_suffix}}'
-pki_cert_src: '{{pki_dir}}/{{pki_certs_subdir}}/{{pki_cert_file}}'
-pki_cert_dest : '{{ssl_key_pki_cert_dir}}/{{pki_cert_file}}'
+docker_pki_cert_file : '{{inventory_hostname}}{{docker_pki_cert_suffix}}'
+docker_pki_cert_src: '{{docker_pki_dir}}/{{docker_pki_cert_file}}'
+docker_pki_cert_dest : '{{docker_ssl_key_pki_cert_dir}}/{{docker_pki_cert_file}}'
 
-pki_ca_file : 'ca{{pki_cert_suffix}}'
-pki_ca_cert_src: '{{pki_dir}}/{{pki_ca_cert_subdir}}/{{pki_ca_file}}'
-pki_ca_cert_dest : '{{ssl_key_pki_cacert_dir}}/{{pki_ca_file}}'
+docker_pki_ca_file : 'ca{{docker_pki_cert_suffix}}'
+docker_pki_ca_cert_src: '{{docker_pki_dir}}/{{docker_pki_ca_file}}'
+docker_pki_ca_cert_dest : '{{docker_ssl_key_pki_cacert_dir}}/{{docker_pki_ca_file}}'
 
 docker_insecure_registries_daemon_args : >-
   {% if docker_insecure_registries is defined %}
@@ -23,9 +23,9 @@ docker_eff_port: >-
 docker_tls_args: >-
   {% if docker_tls %}
   --tls=true
-  --tlscert={{pki_cert_dest}}
-  --tlskey={{pki_key_dest}}
-  --tlscacert={{pki_ca_cert_dest}}
+  --tlscert={{docker_pki_cert_dest}}
+  --tlskey={{docker_pki_key_dest}}
+  --tlscacert={{docker_pki_ca_cert_dest}}
   {% endif %}
   
 docker_dns_daemon_args : >-
@@ -48,7 +48,7 @@ docker_cluster_store_args: >-
   {% endif %}
   
 docker_opts : >-
-  -H tcp://0.0.0.0:{{docker_eff_port}}
+  -H fd:// -H tcp://0.0.0.0:{{docker_eff_port}}
   {% if docker_daemon_args is defined %}{{docker_daemon_args}}{% endif %}
   {{docker_insecure_registries_daemon_args}}
   {{docker_dns_daemon_args}}

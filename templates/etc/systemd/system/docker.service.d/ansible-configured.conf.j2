@@ -1,3 +1,7 @@
+[Unit]
+After=network.target docker.socket
+Requires=docker.socket
+
 [Service]
 {% if proxy_env is defined and proxy_env.http_proxy is defined %}
 Environment=http_proxy={{ proxy_env.http_proxy }}

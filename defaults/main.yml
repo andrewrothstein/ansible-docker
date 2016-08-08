@@ -19,10 +19,6 @@ docker_tls: True
 docker_nontls_port: 2375
 docker_tls_port: 2376
 
-pki_key_suffix: '.key'
-pki_cert_suffix: '.crt'
-
-pki_keys_subdir : 'private'
-pki_certs_subdir : 'issued'
-pki_ca_cert_subdir : '.'
-
+docker_pki_key_suffix: '-key.pem'
+docker_pki_cert_suffix: '.pem'
+docker_pki_dir: '~/pki'
