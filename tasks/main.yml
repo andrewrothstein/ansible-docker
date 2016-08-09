@@ -57,6 +57,14 @@
     src={{item.d}}/{{item.f}}.j2
     dest=/{{item.d}}/{{item.f}}
     mode={{item.m}}
+
+- name: create root user docker config directory
+  become: yes
+  become_user: root
+  file: >-
+    path=/root/.docker
+    state=directory
+    mode=0700
     
 - name: configuring docker access for the root user...
   become: yes
