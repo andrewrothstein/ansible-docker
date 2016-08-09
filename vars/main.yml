@@ -61,7 +61,7 @@ docker_opts : >-
   {{docker_tls_args}}
   {{docker_cluster_advertise_args}}
   {{docker_cluster_store_args}}
-  {{docker_storage_driver}}
+  {{docker_storage_driver_args}}
 
 docker_http_proxy: >-
   {% if proxy_env is defined and proxy_env.http_proxy is defined %}
