@@ -12,16 +12,17 @@ galaxy_info:
         - 7
     - name: Fedora
       versions:
-        - 21
-        - 22
         - 23
+        - 24
     - name: Ubuntu
       versions:
         - trusty
+        - xenial
 
   galaxy_tags:
     - development
 
 dependencies:
-  - andrewrothstein.curl
+  - role: andrewrothstein.curl
+    version: v1.0.0
   
