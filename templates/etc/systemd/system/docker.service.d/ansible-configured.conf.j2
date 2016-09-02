@@ -12,4 +12,4 @@ Environment=HTTPS_PROXY={{ proxy_env.https_proxy }}
 Environment=NO_PROXY={{ proxy_env.no_proxy }}
 {% endif %}
 ExecStart=
-ExecStart=/usr/bin/docker daemon {{ docker_opts }}
+ExecStart=/usr/bin/dockerd {{ docker_opts }}

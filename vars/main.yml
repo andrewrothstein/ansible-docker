@@ -27,6 +27,12 @@ docker_tls_args: >-
   --tlskey={{docker_pki_key_dest}}
   --tlscacert={{docker_pki_ca_cert_dest}}
   {% endif %}
+
+docker_remote_args: >-
+  {% if docker_remote %}
+  {{docker_tls_args}}
+  -H tcp://{{docker_remote_bind}}:{{docker_eff_port}}
+  {% endif %}
   
 docker_dns_daemon_args : >-
   {% if docker_dns_resolvers is defined %}
@@ -53,12 +59,12 @@ docker_storage_driver_args: >-
   {% endif %}
   
 docker_opts : >-
-  -H fd:// -H tcp://0.0.0.0:{{docker_eff_port}}
+  -H fd://
   {% if docker_daemon_args is defined %}{{docker_daemon_args}}{% endif %}
   {{docker_insecure_registries_daemon_args}}
   {{docker_dns_daemon_args}}
   {{docker_bip_daemon_args}}
-  {{docker_tls_args}}
+  {{docker_remote_args}}
   {{docker_cluster_advertise_args}}
   {{docker_cluster_store_args}}
   {{docker_storage_driver_args}}

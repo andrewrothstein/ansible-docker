@@ -10,12 +10,12 @@
 #  - 'localhost:5000'
 #  - 'https://trusted-remote-registry.mydomain'
 
-#docker_daemon_args : '--host tcp://0.0.0.0:2375'
-
 docker_mirror: 'https://get.docker.com'
 docker_group: docker
-docker_tls: True
 
+docker_remote: False
+docker_remote_bind: 0.0.0.0
+docker_tls: True
 docker_nontls_port: 2375
 docker_tls_port: 2376
 
