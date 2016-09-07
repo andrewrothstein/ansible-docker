@@ -59,7 +59,7 @@ docker_storage_driver_args: >-
   {% endif %}
   
 docker_opts : >-
-  -H fd://
+  -H unix:///var/run/docker.sock
   {% if docker_daemon_args is defined %}{{docker_daemon_args}}{% endif %}
   {{docker_insecure_registries_daemon_args}}
   {{docker_dns_daemon_args}}
