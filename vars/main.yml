@@ -51,6 +51,11 @@ docker_cluster_advertise_args: >-
 docker_cluster_store_args: >-
   {% if docker_cluster_store is defined %}
   --cluster-store {{docker_cluster_store}}
+  {% if docker_tls %}
+  --cluster-store-opt kv.cacertfile={{docker_pki_ca_cert_dest}}
+  --cluster-store-opt kv.certfile={{docker_pki_cert_dest}}
+  --cluster-store-opt kv.keyfile={{docker_pki_key_dest}}
+  {% endif %}
   {% endif %}
 
 docker_storage_driver_args: >-
