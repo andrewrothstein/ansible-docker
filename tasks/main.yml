@@ -1,11 +1,4 @@
 ---
-- name: resolve platform specific vars
-  include_vars: "{{item}}"
-  with_first_found:
-    - "{{ansible_distribution}}-{{ansible_distribution_release}}.yml"
-    - "{{ansible_distribution}}.yml"
-    - "{{ansible_os_family}}.yml"
-
 - name: install utils for fiddling with ethernet bridges...
   become: yes
   become_user: root
@@ -23,6 +16,27 @@
   become: yes
   become_user: root
   include: RunInstaller.yml
+
+- name: create root user docker config directory
+  become: yes
+  become_user: root
+  file: >-
+    path=/root/.docker
+    state=directory
+    mode=0700
+    
+- name: configuring docker access for the root user...
+  become: yes
+  become_user: root
+  when: docker_remote or docker_tls
+  with_items:
+    - {f: '{{docker_pki_cert_src}}', t: cert.pem, m: '0600'}
+    - {f: '{{docker_pki_ca_cert_src}}', t: ca.pem, m: '0600'}
+    - {f: '{{docker_pki_key_src}}', t: key.pem, m: '0400'}
+  copy: >-
+    src={{item.f}}
+    dest=/root/.docker/{{item.t}}
+    mode={{item.m}}
 
 - name: loading systemd variables...
   become: yes
@@ -56,27 +70,6 @@
   template: >-
     src={{item.d}}/{{item.f}}.j2
     dest=/{{item.d}}/{{item.f}}
-    mode={{item.m}}
-
-- name: create root user docker config directory
-  become: yes
-  become_user: root
-  file: >-
-    path=/root/.docker
-    state=directory
-    mode=0700
-    
-- name: configuring docker access for the root user...
-  become: yes
-  become_user: root
-  when: docker_remote and docker_tls
-  with_items:
-    - {f: '{{docker_pki_cert_src}}', t: cert.pem, m: '0600'}
-    - {f: '{{docker_pki_ca_cert_src}}', t: ca.pem, m: '0600'}
-    - {f: '{{docker_pki_key_src}}', t: key.pem, m: '0400'}
-  copy: >-
-    src={{item.f}}
-    dest=/root/.docker/{{item.t}}
     mode={{item.m}}
 
 - name: write /etc/profile.d/docker.sh

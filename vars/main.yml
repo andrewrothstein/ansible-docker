@@ -1,15 +1,12 @@
 ---
 docker_pki_key_file : '{{inventory_hostname}}{{docker_pki_key_suffix}}'
 docker_pki_key_src: '{{docker_pki_dir}}/{{docker_pki_key_file}}'
-docker_pki_key_dest : '{{docker_ssl_key_pki_key_dir}}/{{docker_pki_key_file}}'
 
 docker_pki_cert_file : '{{inventory_hostname}}{{docker_pki_cert_suffix}}'
 docker_pki_cert_src: '{{docker_pki_dir}}/{{docker_pki_cert_file}}'
-docker_pki_cert_dest : '{{docker_ssl_key_pki_cert_dir}}/{{docker_pki_cert_file}}'
 
 docker_pki_ca_file : 'ca{{docker_pki_cert_suffix}}'
 docker_pki_ca_cert_src: '{{docker_pki_dir}}/{{docker_pki_ca_file}}'
-docker_pki_ca_cert_dest : '{{docker_ssl_key_pki_cacert_dir}}/{{docker_pki_ca_file}}'
 
 docker_insecure_registries_daemon_args : >-
   {% if docker_insecure_registries is defined %}
@@ -23,9 +20,9 @@ docker_eff_port: >-
 docker_tls_args: >-
   {% if docker_tls %}
   --tls=true
-  --tlscert={{docker_pki_cert_dest}}
-  --tlskey={{docker_pki_key_dest}}
-  --tlscacert={{docker_pki_ca_cert_dest}}
+  --tlscert=/root/.docker/cert.pem
+  --tlskey=/root/.docker/key.pem
+  --tlscacert=/root/.docker/ca.pem
   {% endif %}
 
 docker_remote_args: >-
@@ -52,9 +49,9 @@ docker_cluster_store_args: >-
   {% if docker_cluster_store is defined %}
   --cluster-store {{docker_cluster_store}}
   {% if docker_tls %}
-  --cluster-store-opt kv.cacertfile={{docker_pki_ca_cert_dest}}
-  --cluster-store-opt kv.certfile={{docker_pki_cert_dest}}
-  --cluster-store-opt kv.keyfile={{docker_pki_key_dest}}
+  --cluster-store-opt kv.cacertfile=/root/.docker/ca.pem
+  --cluster-store-opt kv.certfile=/root/.docker/cert.pem
+  --cluster-store-opt kv.keyfile=/root/.docker/key.pem
   {% endif %}
   {% endif %}
 
