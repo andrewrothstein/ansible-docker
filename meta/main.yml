@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Andrew Rothstein
-  description: installs and configures docker
+  description: installs and configures the docker daemon
   company: BlackRock
   license:
     - MIT
