@@ -20,7 +20,9 @@ galaxy_info:
         - xenial
 
   galaxy_tags:
-    - development
+    - docker
+    - virtualization
+    - container
 
 dependencies:
   - role: andrewrothstein.curl
