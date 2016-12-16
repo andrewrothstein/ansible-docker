@@ -22,3 +22,6 @@ docker_tls_port: 2376
 docker_pki_key_suffix: '-key.pem'
 docker_pki_cert_suffix: '.pem'
 docker_pki_dir: '~/pki'
+
+# launch the docker service at installation time
+docker_activate: True
