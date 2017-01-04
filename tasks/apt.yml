@@ -12,4 +12,4 @@
   apt_repository:
     repo: deb https://apt.dockerproject.org/repo {{docker_deb_platform}} main
     state: present
-    name: docker
+    filename: docker
