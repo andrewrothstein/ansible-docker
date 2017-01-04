@@ -14,6 +14,9 @@ galaxy_info:
       versions:
         - 23
         - 24
+    - name: Debian
+      versions:
+        - jessie
     - name: Ubuntu
       versions:
         - trusty
@@ -24,7 +27,5 @@ galaxy_info:
     - virtualization
     - container
 
-dependencies:
-  - role: andrewrothstein.curl
-    version: v1.0.0
+dependencies: []
   
