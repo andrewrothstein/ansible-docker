@@ -8,7 +8,7 @@
 
 #docker_insecure_registries:
 #  - localhost:5000
-#  - https://trusted-remote-registry.mydomain
+#  - https://trusted-remote-registry.mydomain.test
 
 docker_group: docker
 
@@ -20,7 +20,7 @@ docker_pki_key_suffix: '-key.pem'
 docker_pki_cert_suffix: '.pem'
 docker_pki_dir: '~/pki'
 
-# launch the docker service at installation time
+# launch the docker service immediately following configuration
 docker_activate: True
 
 # configuring the docker cluster store
@@ -31,3 +31,9 @@ docker_activate: True
 
 # controls the docker storage driver
 #docker_storage_driver: overlay2
+
+# additional docker storage driver options
+#docker_storage_opts:
+#  - dm.thinpooldev=/dev/mapper/docker-thinpool
+#  - dm.use_deferred_removal=true
+#  - dm.use_deferred_deletion=true

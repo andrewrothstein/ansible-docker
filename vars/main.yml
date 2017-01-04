@@ -51,6 +51,11 @@ docker_storage_driver_args: >-
   {% if docker_storage_driver is defined %}
   --storage-driver={{docker_storage_driver}}
   {% endif %}
+
+docker_storage_opts_args: >-
+  {% for sopt in docker_storage_opts|default([]) %}
+  --storage-opt={{sopt}}
+  {% endfor %}
   
 docker_opts : >-
   -H unix:///var/run/docker.sock
@@ -62,6 +67,7 @@ docker_opts : >-
   {{docker_cluster_advertise_args}}
   {{docker_cluster_store_args}}
   {{docker_storage_driver_args}}
+  {{docker_storage_opts_args}}
 
 docker_http_proxy: >-
   {% if proxy_env is defined and proxy_env.http_proxy is defined %}
