@@ -6,5 +6,5 @@ docker_os_dep_pkgs:
   - apt-transport-https
   - ca-certificates
   - linux-image-extra-virtual
-  - linux-image-extra-lts-xenial
+  - linux-image-extra-virtual-lts-xenial
 
