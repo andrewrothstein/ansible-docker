@@ -1,7 +1,7 @@
 ---
 docker_init: systemd
 docker_installer: apt
-docker_deb_repo: debian-jessie
+docker_deb_platform: debian-jessie
 docker_os_dep_pkgs:
   - apt-transport-https
   - ca-certificates
