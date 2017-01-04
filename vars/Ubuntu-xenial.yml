@@ -1,0 +1,10 @@
+---
+docker_init: systemd
+docker_installer: apt
+docker_deb_repo: ubuntu-xenial
+docker_os_dep_pkgs:
+  - apt-transport-https
+  - ca-certificates
+  - linux-image-extra-xenial
+  - linux-image-extra-trusty
+

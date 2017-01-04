@@ -1,6 +1,4 @@
 ---
-docker_init: upstart
-docker_config_dir: etc/default
 docker_config_files:
   - d: etc/default
     f: docker

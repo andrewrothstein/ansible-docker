@@ -1,77 +1,29 @@
 ---
-- name: install utils for fiddling with ethernet bridges...
+- name: resolve platform specific vars
+  include_vars: '{{item}}'
+  with_first_found:
+    - '{{ansible_distribution}}-{{ansible_distribution_release}}.yml'
+    - '{{ansible_distribution}}.yml'
+    - '{{ansible_os_family}}.yml'
+
+- name: install OS dep pkgs...
   become: yes
   become_user: root
-  with_items:
-    - bridge-utils
+  with_items: '{{docker_os_dep_pkgs|default([])}}'
   package: name={{item}} state=present
 
-- stat: path=/usr/bin/docker
-  become: yes
-  become_user: root
-  register: dockerBinary
+- name: configuring package management system
+  include: '{{docker_installer}}.yml'
 
-- name: install....
-  when: dockerBinary.stat.exists == False
+- name: install docker-engine
   become: yes
   become_user: root
-  include: RunInstaller.yml
+  
+- name: installing PKI keys/certs
+  include: pki.yml
 
-- name: create root user docker config directory
-  become: yes
-  become_user: root
-  file: >-
-    path=/root/.docker
-    state=directory
-    mode=0700
-    
-- name: configuring docker access for the root user...
-  become: yes
-  become_user: root
-  when: docker_remote or docker_tls
-  with_items:
-    - {f: '{{docker_pki_cert_src}}', t: cert.pem, m: '0600'}
-    - {f: '{{docker_pki_ca_cert_src}}', t: ca.pem, m: '0600'}
-    - {f: '{{docker_pki_key_src}}', t: key.pem, m: '0400'}
-  copy: >-
-    src={{item.f}}
-    dest=/root/.docker/{{item.t}}
-    mode={{item.m}}
-
-- name: loading systemd variables...
-  become: yes
-  become_user: root
-  when: >-
-    ansible_distribution != "Ubuntu"
-    or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 16)
-  include_vars: systemd-vars.yml
-
-- name: loading upstart variables...
-  become: yes
-  become_user: root
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 16
-  include_vars: upstart-vars.yml
-    
-- name : creating init-system config directory...
-  become: yes
-  become_user: root
-  with_items: '{{docker_config_files}}'
-  file: >
-    group={{docker_group}}
-    path=/{{item.d}}
-    state=directory
-    mode=0755
-    
-- name: configuring init-system...
-  become: yes
-  become_user: root
-  with_items: '{{docker_config_files}}'
-  register: docker_config_written
-  template: >-
-    src={{item.d}}/{{item.f}}.j2
-    dest=/{{item.d}}/{{item.f}}
-    mode={{item.m}}
-
+- include: init.yml
+  
 - name: write /etc/profile.d/docker.sh
   become: yes
   become_user: root
@@ -82,5 +34,6 @@
     dest=/{{item}}
     mode=0644
 
-- include: activate.yml
+- name: launching docker daemon
+  include: activate.yml
   when: docker_activate
