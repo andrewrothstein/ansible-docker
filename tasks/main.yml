@@ -18,6 +18,9 @@
 - name: install docker-engine
   become: yes
   become_user: root
+  with_items:
+    - docker-engine
+  package: name={{item}} state=present
   
 - name: installing PKI keys/certs
   include: pki.yml
