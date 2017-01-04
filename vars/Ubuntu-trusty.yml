@@ -5,5 +5,4 @@ docker_deb_repo: ubuntu-trusty
 docker_os_dep_pkgs:
   - apt-transport-https
   - ca-certificates
-  - linux-image-extra-trusty
   - linux-image-extra-virtual
