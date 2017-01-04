@@ -7,10 +7,9 @@
 #  - '8.8.4.4'
 
 #docker_insecure_registries:
-#  - 'localhost:5000'
-#  - 'https://trusted-remote-registry.mydomain'
+#  - localhost:5000
+#  - https://trusted-remote-registry.mydomain
 
-docker_mirror: 'https://get.docker.com'
 docker_group: docker
 
 docker_remote: False
