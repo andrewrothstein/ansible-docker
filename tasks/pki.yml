@@ -10,7 +10,6 @@
 - name: configuring docker access for the root user...
   become: yes
   become_user: root
-  when: docker_remote or docker_tls
   with_items:
     - {f: '{{docker_pki_cert_src}}', t: cert.pem, m: '0600'}
     - {f: '{{docker_pki_ca_cert_src}}', t: ca.pem, m: '0600'}

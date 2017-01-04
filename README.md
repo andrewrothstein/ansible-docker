@@ -1,7 +1,7 @@
 andrewrothstein.docker
 ======
 
-A role that installs and launches an optionally TLS secured [Docker](https://docker.io) daemon
+A role that installs and launches an optionally TLS secured [Docker](https://docker.io) daemon. Only listens remotely if secured with TLS.
 
 Requirements
 ------------
@@ -25,7 +25,7 @@ Example Playbook
 - hosts: servers
   roles:
     - role: andrewrothstein.docker
-	  insecure_registries :
+	  docker_insecure_registries :
 	    - localhost:5000
 ```
 

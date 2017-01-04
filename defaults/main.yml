@@ -12,10 +12,8 @@
 
 docker_group: docker
 
-docker_remote: False
-docker_remote_bind: 0.0.0.0
 docker_tls: True
-docker_nontls_port: 2375
+docker_tls_bind: 0.0.0.0
 docker_tls_port: 2376
 
 docker_pki_key_suffix: '-key.pem'
@@ -24,3 +22,12 @@ docker_pki_dir: '~/pki'
 
 # launch the docker service at installation time
 docker_activate: True
+
+# configuring the docker cluster store
+# will only annouce to a cluster store if secured with TLS
+# assumes same key/certs to listen for connections and to talk to the K/V store
+#docker_cluster_store: consul://localhost:8500
+#docker_cluster_advertise_interface: eth1
+
+# controls the docker storage driver
+#docker_storage_driver: overlay2

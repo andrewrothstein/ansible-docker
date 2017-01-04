@@ -23,6 +23,7 @@
   package: name={{item}} state=present
   
 - name: installing PKI keys/certs
+  when: docker_tls
   include: pki.yml
 
 - include: init.yml

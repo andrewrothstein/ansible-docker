@@ -14,23 +14,15 @@ docker_insecure_registries_daemon_args : >-
   {% endfor %}
   {% endif %}
 
-docker_eff_port: >-
-  {% if docker_tls %}{{docker_tls_port}}{% else %}{{docker_nontls_port}}{% endif %}
-  
 docker_tls_args: >-
   {% if docker_tls %}
   --tls=true
   --tlscert=/root/.docker/cert.pem
   --tlskey=/root/.docker/key.pem
   --tlscacert=/root/.docker/ca.pem
+  -H tcp://{{docker_tls_bind}}:{{docker_tls_port}}
   {% endif %}
 
-docker_remote_args: >-
-  {% if docker_remote %}
-  {{docker_tls_args}}
-  -H tcp://{{docker_remote_bind}}:{{docker_eff_port}}
-  {% endif %}
-  
 docker_dns_daemon_args : >-
   {% if docker_dns_resolvers is defined %}
   {% for dns in docker_dns_resolvers %} --dns {{dns}}
@@ -41,8 +33,8 @@ docker_bip_daemon_args : >-
   {% if docker_bip is defined %}--bip="{{ docker_bip }}"{% endif %}
 
 docker_cluster_advertise_args: >-
-  {% if docker_cluster_advertise_interface is defined %}
-  --cluster-advertise {{docker_cluster_advertise_interface}}:{{docker_eff_port}}
+  {% if docker_cluster_advertise_interface is defined and docker_tls %}
+  --cluster-advertise {{docker_cluster_advertise_interface}}:{{docker_tls_port}}
   {% endif %}
 
 docker_cluster_store_args: >-
@@ -66,7 +58,7 @@ docker_opts : >-
   {{docker_insecure_registries_daemon_args}}
   {{docker_dns_daemon_args}}
   {{docker_bip_daemon_args}}
-  {{docker_remote_args}}
+  {{docker_tls_args}}
   {{docker_cluster_advertise_args}}
   {{docker_cluster_store_args}}
   {{docker_storage_driver_args}}
