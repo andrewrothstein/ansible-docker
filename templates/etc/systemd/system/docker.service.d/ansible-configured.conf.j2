@@ -16,4 +16,4 @@ Environment=NO_PROXY={{ proxy_env.no_proxy }}
 EnvironmentFile=-{{ docker_flannel_run_config }}
 {% endif %}
 ExecStart=
-ExecStart=/usr/bin/dockerd {{ docker_opts }} {% if docker_flannel_integration %} --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU} {% endif %}
+ExecStart=/usr/bin/dockerd {{ docker_opts }}

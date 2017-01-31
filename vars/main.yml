@@ -30,7 +30,10 @@ docker_dns_daemon_args : >-
   {% endif %}
 
 docker_bip_daemon_args : >-
-  {% if docker_bip is defined %}--bip="{{ docker_bip }}"{% endif %}
+  {% if docker_bip is defined %}--bip={{ docker_bip }}{% endif %}
+
+docker_mtu_daemon_args : >-
+  {% if docker_mtu is defined %}--mtu={{ docker_mtu }}{% endif %}
 
 docker_cluster_advertise_args: >-
   {% if docker_cluster_advertise_interface is defined and docker_tls %}
@@ -63,6 +66,7 @@ docker_opts : >-
   {{docker_insecure_registries_daemon_args}}
   {{docker_dns_daemon_args}}
   {{docker_bip_daemon_args}}
+  {{docker_mtu_daemon_args}}
   {{docker_tls_args}}
   {{docker_cluster_advertise_args}}
   {{docker_cluster_store_args}}
