@@ -37,3 +37,7 @@ docker_activate: True
 #  - dm.thinpooldev=/dev/mapper/docker-thinpool
 #  - dm.use_deferred_removal=true
 #  - dm.use_deferred_deletion=true
+
+# integrate with flannel
+docker_flannel_integration: False 
+docker_flannel_run_config: /run/flannel/subnet.env
