@@ -38,6 +38,10 @@ docker_activate: True
 #  - dm.use_deferred_removal=true
 #  - dm.use_deferred_deletion=true
 
-# integrate with flannel
-docker_flannel_integration: False 
-docker_flannel_run_config: /run/flannel/subnet.env
+# example flannel integration
+#docker_bip: ${FLANNEL_SUBNET}
+#docker_mtu: ${FLANNEL_MTU}
+#docker_systemd_envs:
+#  - /run/flannel/subnet.env
+#docker_systemd_afters:
+#  - flanneld.service

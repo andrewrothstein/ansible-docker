@@ -1,8 +1,9 @@
 [Unit]
 After=network.target
-{% if docker_flannel_integration %}
-After=flanneld.service
-{% endif %}
+{% for s in docker_systemd_afters | default([]) %}
+After={{s}}
+{% endfor %}
+
 [Service]
 {% if proxy_env is defined and proxy_env.http_proxy is defined %}
 Environment=http_proxy={{ proxy_env.http_proxy }}
@@ -12,8 +13,8 @@ Environment=HTTP_PROXY={{ proxy_env.http_proxy }}
 Environment=HTTPS_PROXY={{ proxy_env.https_proxy }}
 Environment=NO_PROXY={{ proxy_env.no_proxy }}
 {% endif %}
-{% if docker_flannel_integration %}
-EnvironmentFile=-{{ docker_flannel_run_config }}
-{% endif %}
+{% for e in docker_systemd_envs | default([]) %}
+EnvironmentFile=-{{e}}
+{% endfor %}
 ExecStart=
 ExecStart=/usr/bin/dockerd {{ docker_opts }}
