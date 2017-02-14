@@ -19,7 +19,7 @@
   become: yes
   become_user: root
   with_items:
-    - docker-engine
+    - '{{docker_engine_pkg}}'
   package: name={{item}} state=present
   
 - name: installing PKI keys/certs
