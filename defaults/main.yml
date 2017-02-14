@@ -10,6 +10,11 @@
 #  - localhost:5000
 #  - https://trusted-remote-registry.mydomain.test
 
+# To install specific version, change the docker-engine package name to include version string as supported by OS specific package manager
+# eg. to install docker-engine v1.12.6 in Centos7, set docker_engine_pkg to docker-engine-1.12.6-1.el7.centos
+# Role will install latest version by default
+docker_engine_pkg: docker-engine
+
 docker_group: docker
 
 docker_tls: True
