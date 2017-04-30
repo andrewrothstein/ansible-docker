@@ -1,7 +1,6 @@
-[![CircleCI](https://circleci.com/gh/andrewrothstein/ansible-docker.svg?style=svg)](https://circleci.com/gh/andrewrothstein/ansible-docker)
-
 andrewrothstein.docker
 ======
+[![Build Status](https://travis-ci.org/andrewrothstein/ansible-docker.svg?branch=master)](https://travis-ci.org/andrewrothstein/ansible-docker)
 
 A role that installs and launches an optionally TLS secured [Docker](https://docker.io) daemon. Only listens remotely if secured with TLS.
 
