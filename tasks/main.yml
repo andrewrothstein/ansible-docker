@@ -17,7 +17,7 @@
   package: name={{item}} state=present
 
 - name: configuring package management system
-  include: '{{docker_installer}}.yml'
+  include_tasks: '{{docker_installer}}.yml'
 
 - name: install docker-engine
   become: yes
@@ -28,9 +28,9 @@
   
 - name: installing PKI keys/certs
   when: docker_tls
-  include: pki.yml
+  include_tasks: pki.yml
 
-- include: init.yml
+- include_tasks: init.yml
   
 - name: write /etc/profile.d/docker.sh
   become: yes
@@ -43,5 +43,5 @@
     mode=0644
 
 - name: launching docker daemon
-  include: activate.yml
+  include_tasks: activate.yml
   when: docker_activate
