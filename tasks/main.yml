@@ -14,7 +14,9 @@
   become: yes
   become_user: root
   with_items: '{{docker_os_dep_pkgs|default([])}}'
-  package: name={{item}} state=present
+  package:
+    name: '{{item}}'
+    state: present
 
 - name: configuring package management system
   include_tasks: '{{docker_installer}}.yml'
@@ -24,7 +26,9 @@
   become_user: root
   with_items:
     - '{{docker_engine_pkg}}'
-  package: name={{item}} state=present
+  package:
+    name: '{{item}}'
+    state: present
   
 - name: installing PKI keys/certs
   when: docker_tls
@@ -36,11 +40,12 @@
   become: yes
   become_user: root
   with_items:
-    - etc/profile.d/docker.sh
-  template: >-
-    src={{item}}.j2
-    dest=/{{item}}
-    mode=0644
+    - d: etc/profile.d
+      f: docker.sh
+  template:
+    src: '{{item.d}}/{{item.f}}.j2'
+    dest: '/{{item.d}}/{{item.f}}'
+    mode: '{{item.m|default("0644")}}'
 
 - name: launching docker daemon
   include_tasks: activate.yml
