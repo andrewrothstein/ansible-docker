@@ -1,6 +1,6 @@
 ---
 - name: init-system reload 
-  when: docker_config_written|changed and docker_init == 'systemd'
+  when: docker_config_written is changed and docker_init == 'systemd'
   become: yes
   become_user: root
   command: systemctl daemon-reload
