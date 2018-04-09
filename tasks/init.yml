@@ -5,19 +5,18 @@
   become: yes
   become_user: root
   with_items: '{{docker_config_files}}'
-  file: >
-    group={{docker_group}}
-    path=/{{item.d}}
-    state=directory
-    mode=0755
+  file:
+    path: '/{{item.d}}'
+    state: directory
+    mode: 0755
     
 - name: configuring init-system...
   become: yes
   become_user: root
   with_items: '{{docker_config_files}}'
   register: docker_config_written
-  template: >-
-    src={{item.d}}/{{item.f}}.j2
-    dest=/{{item.d}}/{{item.f}}
-    mode={{item.m}}
+  template:
+    src: '{{item.d}}/{{item.f}}.j2'
+    dest: '/{{item.d}}/{{item.f}}'
+    mode: '{{item.m}}'
 

@@ -4,7 +4,7 @@
   become_user: root
   with_items:
     - etc/yum.repos.d/docker.repo
-  template: >-
-    src={{item}}.j2
-    dest=/{{item}}
-    mode=0644
+  template:
+    src: '{{item}}.j2'
+    dest: '/{{item}}'
+    mode: 0644
