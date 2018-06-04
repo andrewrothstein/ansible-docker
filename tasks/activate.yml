@@ -4,6 +4,7 @@
   become: yes
   become_user: root
   command: systemctl daemon-reload
+  notify: restart docker
  
 - name : launch docker...
   become: yes

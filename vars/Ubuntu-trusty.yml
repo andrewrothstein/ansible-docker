@@ -1,7 +1,8 @@
 ---
 docker_init: upstart
 docker_installer: apt
-docker_deb_platform: ubuntu-trusty
+docker_os_distro: ubuntu
+docker_os_codename: trusty
 docker_os_dep_pkgs:
   - apt-transport-https
   - ca-certificates

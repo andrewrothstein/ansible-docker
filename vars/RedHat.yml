@@ -1,4 +1,4 @@
 ---
 docker_init: systemd
 docker_installer: yum
-docker_yum_baseurl: https://yum.dockerproject.org/repo/main/centos/7/
+docker_os_distro: centos

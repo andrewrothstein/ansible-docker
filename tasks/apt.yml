@@ -1,15 +1,24 @@
 ---
+- name: get cpu architecture
+  command: dpkg --print-architecture
+  register: cpu_architecture
+  check_mode: false
+  changed_when: false
+
 - name: trust apt key
   become: yes
   become_user: root
   apt_key:
-    keyserver: hkp://ha.pool.sks-keyservers.net:80
-    id: 58118E89F3A912897C070ADBF76221572C52609D
+    url: https://download.docker.com/linux/{{docker_os_distro}}/gpg
 
 - name: install docker.list
   become: yes
   become_user: root
   apt_repository:
-    repo: deb https://apt.dockerproject.org/repo {{docker_deb_platform}} main
+    repo: >
+      deb [arch={{cpu_architecture.stdout}}]
+      https://download.docker.com/linux/{{docker_os_distro}}
+      {{docker_os_codename}}
+      stable
     state: present
     filename: docker

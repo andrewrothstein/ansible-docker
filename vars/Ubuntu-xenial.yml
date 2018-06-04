@@ -1,7 +1,8 @@
 ---
 docker_init: systemd
 docker_installer: apt
-docker_deb_platform: ubuntu-xenial
+docker_os_distro: ubuntu
+docker_os_codename: xenial
 docker_os_dep_pkgs:
   - apt-transport-https
   - ca-certificates
