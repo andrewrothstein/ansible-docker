@@ -1,4 +1,4 @@
 ---
 docker_init: systemd
 docker_installer: yum
-docker_yum_baseurl: https://yum.dockerproject.org/repo/main/fedora/$releasever/
+docker_os_distro: fedora
