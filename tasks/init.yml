@@ -2,7 +2,7 @@
 - name: initialize ansible vars
   include_vars: '{{ docker_init }}-vars.yml'
 
-- name : creating init-system config directory...
+- name: creating init-system config directory...
   become: yes
   become_user: root
   with_items: '{{ docker_config_files }}'

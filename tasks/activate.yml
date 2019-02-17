@@ -6,7 +6,7 @@
   systemd:
     daemon_reload: yes
 
-- name : launch docker...
+- name: launch docker...
   become: yes
   become_user: root
   service:

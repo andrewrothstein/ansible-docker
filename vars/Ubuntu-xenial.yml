@@ -7,4 +7,3 @@ docker_os_dep_pkgs:
   - ca-certificates
   - linux-image-extra-virtual
   - linux-image-extra-virtual-lts-xenial
-

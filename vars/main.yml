@@ -1,14 +1,14 @@
 ---
-docker_pki_key_file : '{{ inventory_hostname }}{{ docker_pki_key_suffix }}'
+docker_pki_key_file: '{{ inventory_hostname }}{{ docker_pki_key_suffix }}'
 docker_pki_key_src: '{{ docker_pki_dir }}/{{ docker_pki_key_file }}'
 
-docker_pki_cert_file : '{{ inventory_hostname }}{{ docker_pki_cert_suffix }}'
+docker_pki_cert_file: '{{ inventory_hostname }}{{ docker_pki_cert_suffix }}'
 docker_pki_cert_src: '{{ docker_pki_dir }}/{{ docker_pki_cert_file }}'
 
-docker_pki_ca_file : 'ca{{ docker_pki_cert_suffix }}'
+docker_pki_ca_file: 'ca{{ docker_pki_cert_suffix }}'
 docker_pki_ca_cert_src: '{{ docker_pki_dir }}/{{ docker_pki_ca_file }}'
 
-docker_insecure_registries_daemon_args : >-
+docker_insecure_registries_daemon_args: >-
   {% if docker_insecure_registries is defined %}
   {% for ir in docker_insecure_registries %} --insecure-registry {{ ir }}
   {% endfor %}
@@ -23,16 +23,16 @@ docker_tls_args: >-
   -H tcp://{{ docker_tls_bind }}:{{ docker_tls_port }}
   {% endif %}
 
-docker_dns_daemon_args : >-
+docker_dns_daemon_args: >-
   {% if docker_dns_resolvers is defined %}
   {% for dns in docker_dns_resolvers %} --dns {{ dns }}
   {% endfor %}
   {% endif %}
 
-docker_bip_daemon_args : >-
+docker_bip_daemon_args: >-
   {% if docker_bip is defined %}--bip={{ docker_bip }}{% endif %}
 
-docker_mtu_daemon_args : >-
+docker_mtu_daemon_args: >-
   {% if docker_mtu is defined %}--mtu={{ docker_mtu }}{% endif %}
 
 docker_cluster_advertise_args: >-
@@ -59,8 +59,8 @@ docker_storage_opts_args: >-
   {% for sopt in docker_storage_opts|default([]) %}
   --storage-opt={{ sopt }}
   {% endfor %}
-  
-docker_opts : >-
+
+docker_opts: >-
   -H unix:///var/run/docker.sock
   {% if docker_daemon_args is defined %}{{ docker_daemon_args }}{% endif %}
   {{ docker_insecure_registries_daemon_args }}
@@ -88,8 +88,7 @@ docker_no_proxy: >-
   export no_proxy="{{ proxy_env.no_proxy }}"
   {% endif %}
 
-docker_proxy_args : |
+docker_proxy_args: |
   {{ docker_http_proxy }}
   {{ docker_https_proxy }}
   {{ docker_no_proxy }}
-  

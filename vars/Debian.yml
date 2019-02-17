@@ -6,4 +6,3 @@ docker_os_dep_pkgs:
   - apt-transport-https
   - ca-certificates
   - gnupg2
-
