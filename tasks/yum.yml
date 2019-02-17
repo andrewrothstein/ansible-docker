@@ -5,6 +5,6 @@
   with_items:
     - etc/yum.repos.d/docker.repo
   template:
-    src: '{{item}}.j2'
-    dest: '/{{item}}'
+    src: '{{ item }}.j2'
+    dest: '/{{ item }}'
     mode: 0644

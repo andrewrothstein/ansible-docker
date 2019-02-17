@@ -1,22 +1,22 @@
 ---
-- include_vars: '{{docker_init}}-vars.yml'
+- name: initialize ansible vars
+  include_vars: '{{ docker_init }}-vars.yml'
 
 - name : creating init-system config directory...
   become: yes
   become_user: root
-  with_items: '{{docker_config_files}}'
+  with_items: '{{ docker_config_files }}'
   file:
-    path: '/{{item.d}}'
+    path: '/{{ item.d }}'
     state: directory
     mode: 0755
-    
+
 - name: configuring init-system...
   become: yes
   become_user: root
-  with_items: '{{docker_config_files}}'
+  with_items: '{{ docker_config_files }}'
   register: docker_config_written
   template:
-    src: '{{item.d}}/{{item.f}}.j2'
-    dest: '/{{item.d}}/{{item.f}}'
-    mode: '{{item.m}}'
-
+    src: '{{ item.d }}/{{ item.f }}.j2'
+    dest: '/{{ item.d }}/{{ item.f }}'
+    mode: '{{ item.m }}'

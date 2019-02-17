@@ -1,16 +1,16 @@
 ---
-docker_pki_key_file : '{{inventory_hostname}}{{docker_pki_key_suffix}}'
-docker_pki_key_src: '{{docker_pki_dir}}/{{docker_pki_key_file}}'
+docker_pki_key_file : '{{ inventory_hostname }}{{ docker_pki_key_suffix }}'
+docker_pki_key_src: '{{ docker_pki_dir }}/{{ docker_pki_key_file }}'
 
-docker_pki_cert_file : '{{inventory_hostname}}{{docker_pki_cert_suffix}}'
-docker_pki_cert_src: '{{docker_pki_dir}}/{{docker_pki_cert_file}}'
+docker_pki_cert_file : '{{ inventory_hostname }}{{ docker_pki_cert_suffix }}'
+docker_pki_cert_src: '{{ docker_pki_dir }}/{{ docker_pki_cert_file }}'
 
-docker_pki_ca_file : 'ca{{docker_pki_cert_suffix}}'
-docker_pki_ca_cert_src: '{{docker_pki_dir}}/{{docker_pki_ca_file}}'
+docker_pki_ca_file : 'ca{{ docker_pki_cert_suffix }}'
+docker_pki_ca_cert_src: '{{ docker_pki_dir }}/{{ docker_pki_ca_file }}'
 
 docker_insecure_registries_daemon_args : >-
   {% if docker_insecure_registries is defined %}
-  {% for ir in docker_insecure_registries %} --insecure-registry {{ir}}
+  {% for ir in docker_insecure_registries %} --insecure-registry {{ ir }}
   {% endfor %}
   {% endif %}
 
@@ -20,12 +20,12 @@ docker_tls_args: >-
   --tlscert=/root/.docker/cert.pem
   --tlskey=/root/.docker/key.pem
   --tlscacert=/root/.docker/ca.pem
-  -H tcp://{{docker_tls_bind}}:{{docker_tls_port}}
+  -H tcp://{{ docker_tls_bind }}:{{ docker_tls_port }}
   {% endif %}
 
 docker_dns_daemon_args : >-
   {% if docker_dns_resolvers is defined %}
-  {% for dns in docker_dns_resolvers %} --dns {{dns}}
+  {% for dns in docker_dns_resolvers %} --dns {{ dns }}
   {% endfor %}
   {% endif %}
 
@@ -37,12 +37,12 @@ docker_mtu_daemon_args : >-
 
 docker_cluster_advertise_args: >-
   {% if docker_cluster_advertise_interface is defined and docker_tls %}
-  --cluster-advertise {{docker_cluster_advertise_interface}}:{{docker_tls_port}}
+  --cluster-advertise {{ docker_cluster_advertise_interface }}:{{ docker_tls_port }}
   {% endif %}
 
 docker_cluster_store_args: >-
   {% if docker_cluster_store is defined %}
-  --cluster-store {{docker_cluster_store}}
+  --cluster-store {{ docker_cluster_store }}
   {% if docker_tls %}
   --cluster-store-opt kv.cacertfile=/root/.docker/ca.pem
   --cluster-store-opt kv.certfile=/root/.docker/cert.pem
@@ -52,44 +52,44 @@ docker_cluster_store_args: >-
 
 docker_storage_driver_args: >-
   {% if docker_storage_driver is defined %}
-  --storage-driver={{docker_storage_driver}}
+  --storage-driver={{ docker_storage_driver }}
   {% endif %}
 
 docker_storage_opts_args: >-
   {% for sopt in docker_storage_opts|default([]) %}
-  --storage-opt={{sopt}}
+  --storage-opt={{ sopt }}
   {% endfor %}
   
 docker_opts : >-
   -H unix:///var/run/docker.sock
-  {% if docker_daemon_args is defined %}{{docker_daemon_args}}{% endif %}
-  {{docker_insecure_registries_daemon_args}}
-  {{docker_dns_daemon_args}}
-  {{docker_bip_daemon_args}}
-  {{docker_mtu_daemon_args}}
-  {{docker_tls_args}}
-  {{docker_cluster_advertise_args}}
-  {{docker_cluster_store_args}}
-  {{docker_storage_driver_args}}
-  {{docker_storage_opts_args}}
+  {% if docker_daemon_args is defined %}{{ docker_daemon_args }}{% endif %}
+  {{ docker_insecure_registries_daemon_args }}
+  {{ docker_dns_daemon_args }}
+  {{ docker_bip_daemon_args }}
+  {{ docker_mtu_daemon_args }}
+  {{ docker_tls_args }}
+  {{ docker_cluster_advertise_args }}
+  {{ docker_cluster_store_args }}
+  {{ docker_storage_driver_args }}
+  {{ docker_storage_opts_args }}
 
 docker_http_proxy: >-
   {% if proxy_env is defined and proxy_env.http_proxy is defined %}
-  export http_proxy="{{proxy_env.http_proxy}}"
+  export http_proxy="{{ proxy_env.http_proxy }}"
   {% endif %}
 
 docker_https_proxy: >-
   {% if proxy_env is defined and proxy_env.https_proxy is defined %}
-  export https_proxy="{{proxy_env.https_proxy}}"
+  export https_proxy="{{ proxy_env.https_proxy }}"
   {% endif %} 
 
 docker_no_proxy: >-
   {% if proxy_env is defined and proxy_env.no_proxy is defined %}
-  export no_proxy="{{proxy_env.no_proxy}}"
+  export no_proxy="{{ proxy_env.no_proxy }}"
   {% endif %}
 
 docker_proxy_args : |
-  {{docker_http_proxy}}
-  {{docker_https_proxy}}
-  {{docker_no_proxy}}
+  {{ docker_http_proxy }}
+  {{ docker_https_proxy }}
+  {{ docker_no_proxy }}
   

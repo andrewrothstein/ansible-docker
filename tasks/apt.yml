@@ -10,6 +10,6 @@
   become: yes
   become_user: root
   apt_repository:
-    repo: deb https://apt.dockerproject.org/repo {{docker_deb_platform}} main
+    repo: deb https://apt.dockerproject.org/repo {{ docker_deb_platform }} main
     state: present
     filename: docker

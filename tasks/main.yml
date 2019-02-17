@@ -1,41 +1,42 @@
 ---
 - name: resolve platform specific vars
-  include_vars: '{{item}}'
+  include_vars: '{{ item }}'
   with_first_found:
     - files:
-        - '{{ansible_distribution}}-{{ansible_distribution_release}}.yml'
-        - '{{ansible_distribution}}.yml'
-        - '{{ansible_os_family}}.yml'
+        - '{{ ansible_distribution }}-{{ ansible_distribution_release }}.yml'
+        - '{{ ansible_distribution }}.yml'
+        - '{{ ansible_os_family }}.yml'
       skip: true
       paths:
-        - '{{role_path}}/vars'
+        - '{{ role_path }}/vars'
 
 - name: install OS dep pkgs...
   become: yes
   become_user: root
-  with_items: '{{docker_os_dep_pkgs|default([])}}'
+  with_items: '{{ docker_os_dep_pkgs|default([]) }}'
   package:
-    name: '{{item}}'
+    name: '{{ item }}'
     state: present
 
 - name: configuring package management system
-  include_tasks: '{{docker_installer}}.yml'
+  include_tasks: '{{ docker_installer }}.yml'
 
 - name: install docker-engine
   become: yes
   become_user: root
   with_items:
-    - '{{docker_engine_pkg}}'
+    - '{{ docker_engine_pkg }}'
   package:
-    name: '{{item}}'
+    name: '{{ item }}'
     state: present
-  
+
 - name: installing PKI keys/certs
   when: docker_tls
   include_tasks: pki.yml
 
-- include_tasks: init.yml
-  
+- name: initializing...
+  include_tasks: init.yml
+
 - name: write /etc/profile.d/docker.sh
   become: yes
   become_user: root
@@ -43,9 +44,9 @@
     - d: etc/profile.d
       f: docker.sh
   template:
-    src: '{{item.d}}/{{item.f}}.j2'
-    dest: '/{{item.d}}/{{item.f}}'
-    mode: '{{item.m|default("0644")}}'
+    src: '{{ item.d }}/{{ item.f }}.j2'
+    dest: '/{{ item.d }}/{{ item.f }}'
+    mode: '{{ item.m|default("0644") }}'
 
 - name: launching docker daemon
   include_tasks: activate.yml
